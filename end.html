@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Travel Path Animation</title>
+
+<style>
+    body {
+        margin: 0;
+        background: radial-gradient(circle at center, #ffbfdc, #ff7fb8);
+        overflow: hidden;
+        font-family: "Poppins", sans-serif;
+        color: white;
+        text-align: center;
+    }
+
+    .scene {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        animation: fadeIn 1.2s ease forwards;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translate(-50%, -50%) scale(0.85); }
+        to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    }
+
+    /* Cute stylized globe */
+    .globe {
+        width: 330px;
+        height: 330px;
+        border-radius: 50%;
+        background: radial-gradient(circle at 30% 30%, #ffffff, #ff9ac4, #ff6fa8);
+        position: relative;
+        overflow: hidden;
+        box-shadow:
+            0 0 40px rgba(255, 255, 255, 0.7),
+            inset 0 0 60px rgba(0, 0, 0, 0.25);
+    }
+
+    .globe::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        background: radial-gradient(circle at 70% 80%, rgba(0,0,0,0.4), transparent 60%);
+        mix-blend-mode: multiply;
+    }
+
+    svg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 330px;
+        height: 330px;
+        pointer-events: none;
+    }
+
+    /* Travel path */
+    .path {
+        stroke: white;
+        stroke-width: 3.5;
+        fill: none;
+        stroke-linecap: round;
+        filter: drop-shadow(0 0 6px white);
+        stroke-dasharray: 600;
+        stroke-dashoffset: 600;
+        animation: draw 4s ease forwards 1.2s;
+    }
+
+    @keyframes draw {
+        to { stroke-dashoffset: 0; }
+    }
+
+    /* Heart markers */
+    .heart {
+        animation: pulse 1.5s infinite ease-in-out;
+        filter: drop-shadow(0 0 6px white);
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.3); }
+        100% { transform: scale(1); }
+    }
+    /* Labels under each country */
+.label {
+    fill: white;
+    font-weight: 600;
+    text-shadow:
+        0 0 4px black,
+        0 0 8px black;
+}
+
+/* Tiny pulsing glow around hearts */
+.heart {
+    animation: pulseGlow 1.6s infinite ease-in-out;
+    filter: drop-shadow(0 0 6px white);
+}
+
+@keyframes pulseGlow {
+    0% { transform: scale(1); filter: drop-shadow(0 0 4px white); }
+    50% { transform: scale(1.25); filter: drop-shadow(0 0 10px white); }
+    100% { transform: scale(1); filter: drop-shadow(0 0 4px white); }
+}
+
+
+    /* Final text */
+    .message {
+        margin-top: 40px;
+        font-size: 2.4rem;
+        font-weight: 700;
+        opacity: 0;
+        animation: fadeInText 2s ease forwards 5.5s;
+        color: pink;
+        text-shadow:
+            0 0 4px black,
+            0 0 10px black,
+            0 0 18px black;
+    }
+
+    @keyframes fadeInText {
+        to { opacity: 1; }
+    }
+
+    /* Zoom at end */
+    .zoom {
+        animation: zoomIn 2s ease forwards;
+    }
+
+    @keyframes zoomIn {
+        to { transform: translate(-50%, -50%) scale(1.4); opacity: 0.3; }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="scene" id="scene">
+    <div class="globe"></div>
+
+<svg viewBox="0 0 330 330">
+
+    <!-- USA → Germany curved path -->
+    <path id="flightPath" class="path"
+          d="M80 210 
+             Q150 120 240 90" />
+
+    <!-- USA heart -->
+    <text x="80" y="210" font-size="32px" class="heart">💗</text>
+    <text x="70" y="240" font-size="18px" class="label">you</text>
+
+    <!-- Germany heart -->
+    <text x="240" y="90" font-size="32px" class="heart">💗</text>
+    <text x="225" y="120" font-size="18px" class="label">me</text>
+
+</svg>
+
+
+    <div class="message">you're worth crossing the world for.</div>
+</div>
+
+<script>
+    const scene = document.getElementById("scene");
+
+    // Add zoom effect after path finishes
+    setTimeout(() => {
+        scene.classList.add("zoom");
+    }, 5200);
+</script>
+
+</body>
+</html>
